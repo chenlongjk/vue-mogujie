@@ -1,12 +1,26 @@
 <template>
-<div>
-  分类
-</div>
+  <div class="category clearfix">
+ 
+    <div class="d1">
+      132131
+    </div>
+  </div>
 </template>
 <script>
 export default {
-name: 'Category'
+  name: "Category",
+  mounted() {
+  
+    
+    
+  }
 };
 </script>
-<style>
+<style scoped>
+.category {
+  background-color: red;
+}
+.d1 {
+  float: left;
+}
 </style>

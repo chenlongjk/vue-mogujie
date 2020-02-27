@@ -1,7 +1,7 @@
 <template>
   <van-swipe :autoplay="3000" indicator-color="white">
-    <van-swipe-item v-for="banner in bannerList">
-      <img :src="banner.image" />
+    <van-swipe-item >
+      <img src="" />
     </van-swipe-item>
   </van-swipe>
 </template>
@@ -22,4 +22,8 @@ export default {
 };
 </script>
 <style scoped>
+img {
+  height: 200px;
+  background-color: blue;
+}
 </style>
