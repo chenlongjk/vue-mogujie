@@ -1,55 +1,74 @@
 <template>
-  <div class="wrap" ref="wrap">
-    <slot></slot>
-  </div>
+    <div class="wrap" ref="wrap">
+        <slot></slot>
+    </div>
 </template>
 <script>
-import BScroll from "better-scroll";
-export default {
-  name: "Scroll",
-  props: {
-    probeType: {
-      type: Number,
-      default: 0
-    }
-  },
-  data() {
-    return {
-      scroll: null
-    };
-  },
-  mounted() {
-    setTimeout(() => {
-      this.scorllEvent()
-    }, 300);
-  },
-  methods: {
-    backTop(x, y, time = 300) {
-      this.scroll.scrollTo(x, y, time);
+  import BScroll from "better-scroll";
+
+  export default {
+    name: "Scroll",
+    props: {
+      probeType: {
+        type: Number,
+        default: 0
+      },
+      pullUpLoad: {
+        type: Boolean,
+        default: false
+      }
     },
-    scorllEvent() {
-      this.scroll = new BScroll(this.$refs.wrap, {
-        click: true,
-        probeType: this.probeType,
-        pullUpLoad: true
-      });
-      this.scroll.on("scroll", position => {
-        this.$emit("scrollTance", position);
-      });
-      this.scroll.on("pullingUp", () => {
-      this.$emit('moreLoad')
-      });
+    data() {
+      return {
+        scroll: null
+      };
     },
-    finishPullUp(){
-      this.scroll.finishPullUp()
+    mounted() {
+      this.scorllEvent();
+    },
+    methods: {
+      //滚动位置
+      backTop(x, y, time = 300) {
+        this.scroll.scrollTo(x, y, time);
+      },
+      scorllEvent() {
+        this.scroll = new BScroll(this.$refs.wrap, {
+          click: true,
+          probeType: this.probeType,
+          pullUpLoad: this.pullUpLoad
+        });
+        this.scroll.on("scroll", position => {
+          this.$emit("scrollTance", position);
+        });
+        if (this.pullUpLoad) {
+          this.scroll.on("pullingUp", () => {
+            setTimeout(()=>{
+              this.$emit("moreLoad");
+            },500)
+
+            console.log('滚动到底部了');
+          });
+        }
+
+      },
+
+      finishPullUp() {
+        // 上拉加载完成
+        this.scroll.finishPullUp();
+        console.log("上拉加载完成");
+      },
+      refresh() {
+        // 重新计算滚动区域
+        this.scroll && this.scroll.refresh();
+        console.log("refresh刷新");
+      }
     }
-  }
-};
+  };
 </script>
 <style scoped>
-.wrap {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
+    .wrap {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
 </style>
