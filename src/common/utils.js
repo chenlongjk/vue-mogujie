@@ -8,4 +8,5 @@ function debounce(func, time) {
     }, time)
   }
 }
+
 export {debounce}

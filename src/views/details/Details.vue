@@ -1,30 +1,33 @@
 <template>
-    <div class="details">
-        <details-nav-bar></details-nav-bar>
-        <detail-swiper :MainImgList="MainImgList"/>
-        <detail-info :goodsInfo="goodsInfo"/>
-        <detail-img-info :ImgInfoList="ImgInfoList" />
-    </div>
+  <div class="details">
+    <details-nav-bar></details-nav-bar>
+    <detail-swiper :MainImgList="MainImgList" ref="main"/>
+    <detail-info :goodsInfo="goodsInfo"/>
+    <detail-img-info :ImgInfoList="ImgInfoList"/>
+    <detail-bottom></detail-bottom>
+  </div>
 
 </template>
 
 <script>
-  import {goodsDetails,GoodsInfo} from "@/network/details";
+  import {goodsDetails, GoodsInfo} from "@/network/details";
   import DetailsNavBar from './childViews/DetailsNavBar'
   import DetailSwiper from './childViews/DetailSwiper.vue'
   import DetailInfo from './childViews/DetailInfo.vue'
   import DetailImgInfo from './childViews/DetailImgInfo.vue'
+  import Scroll from '@/components/common/scroll/Scroll.vue'
+  import DetailBottom from '@/views/details/childViews/DetailBottom.vue'
   export default {
     name: "Details",
     data() {
       return {
         //轮播图数据
         MainImgList: [],
-        goodsInfo:{},
-        ImgInfoList:[]
+        goodsInfo: {},
+        ImgInfoList: []
       }
     },
-    created(){
+    created() {
       goodsDetails({
         'Id': this.$route.query.id
       }).then(res => {
@@ -37,23 +40,32 @@
       })
     },
     mounted() {
+      console.log(Number.MAX_VALUE);
+    },
+    updated(){
 
     },
     components: {
       DetailsNavBar,
       DetailSwiper,
       DetailInfo,
-      DetailImgInfo
+      DetailImgInfo,
+      Scroll,
+      DetailBottom
     }
   }
 </script>
 
 <style scoped>
-.details{
+  .details {
     background-color: #FAFAFA;
     /*background-color: red;*/
-    padding-bottom: 5px;
-    position: relative;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
     z-index: 999;
-}
+    height: 100%;
+
+  }
 </style>
