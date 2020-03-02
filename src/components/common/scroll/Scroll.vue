@@ -46,7 +46,6 @@
               this.$emit("moreLoad");
             },500)
 
-            console.log('滚动到底部了');
           });
         }
 

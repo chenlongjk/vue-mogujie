@@ -18,7 +18,7 @@ export default {
 </script>
 <style scoped>
   .nav-bar {
-    background-color: aquamarine;
+    background-color: #ffffff;
     display: flex;
     height: 44px;
     width: 100%;

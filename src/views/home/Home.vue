@@ -1,26 +1,26 @@
 <template>
-    <div id="home">
-        <!-- 头部 -->
-        <nav-bar>
-            <div slot="center">购物街</div>
-        </nav-bar>
-        <!-- 轮播图 -->
-        <home-swiper :bannerList="banners.list"/>
-        <!-- 推荐 -->
-        <home-recome :recommends="recommends.list"/>
-        <!-- 商品导航 -->
-        <!-- <tab-control :titles="['流行','新款','精选']" /> -->
-        <!-- 商品展示 -->
-        <div class="show-goods">
-            <scroll ref="scroll" @scrollTance="scrollTance" :probe-type="3" @moreLoad="moreLoad" :pullUpLoad="true">
-                <goods-list :goods="goods"></goods-list>
-            </scroll>
-            <!-- 返回顶部按钮 -->
-            <div class="backBtn" v-show="isShowBtn">
-                <back-top @click.native="scrollTopHome"/>
-            </div>
-        </div>
+  <div id="home">
+    <!-- 头部 -->
+    <nav-bar>
+      <div slot="center">购物街</div>
+    </nav-bar>
+    <!-- 轮播图 -->
+    <home-swiper :bannerList="banners.list"/>
+    <!-- 推荐 -->
+    <home-recome :recommends="recommends.list"/>
+    <!-- 商品导航 -->
+    <!-- <tab-control :titles="['流行','新款','精选']" /> -->
+    <!-- 商品展示 -->
+    <div class="show-goods">
+      <scroll ref="scroll" @scrollTance="scrollTance" :probe-type="3" @moreLoad="moreLoad" :pullUpLoad="true">
+        <goods-list :goods="goods"></goods-list>
+      </scroll>
+      <!-- 返回顶部按钮 -->
+      <div class="backBtn" v-show="isShowBtn">
+        <back-top @click.native="scrollTopHome"/>
+      </div>
     </div>
+  </div>
 </template>
 <script>
   // 子组件
@@ -45,7 +45,7 @@
         goods: [],
         params: {PageIndex: 1, PageRecord: 1},
         isShowBtn: false,
-        position:{x:0,y:0}
+        position: {x: 0, y: 1}
       };
     },
     created() {
@@ -76,13 +76,11 @@
         this.$refs.scroll.finishPullUp();
       }
     },
-    activated(){
-      console.log('进来');
-      this.$refs.scroll.backTop(0,this.position.y,0)
+    activated() {
+      this.$refs.scroll.backTop(0, this.position.y, 0)
     },
-    deactivated(){
+    deactivated() {
       console.log('离开')
-      console.log(this.position);
     },
     destroyed() {
       console.log('销毁');
@@ -99,27 +97,27 @@
   };
 </script>
 <style scoped>
-    #home {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }
+  #home {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
 
-    .show-goods {
-        position: absolute;
-        top: 244px;
-        bottom: 50px;
-        width: 100%;
-    }
+  .show-goods {
+    position: absolute;
+    top: 244px;
+    bottom: 50px;
+    width: 100%;
+  }
 
-    .backBtn {
-        width: 35px;
-        height: 35px;
-        position: absolute;
-        bottom: 10px;
-        right: 10px;
-        border-radius: 50%;
-    }
+  .backBtn {
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    border-radius: 50%;
+  }
 </style>

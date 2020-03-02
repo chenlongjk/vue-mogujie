@@ -17,6 +17,6 @@
   left: 0;
   width: 100%;
   height: 50px;
-  background-color: #ffffff;
+  background-color: rgba(0,0,0,0.5);
 }
 </style>

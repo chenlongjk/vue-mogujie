@@ -16,7 +16,7 @@
     name: "DetailsNavBar",
     data() {
       return {
-        titles: ['商品', '参数', '评价', '推荐'],
+        titles: ['商品', '参数', '详情'],
         currentIndex: 0
       }
     },

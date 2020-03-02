@@ -1,9 +1,16 @@
 <template>
   <div class="details">
     <details-nav-bar></details-nav-bar>
-    <detail-swiper :MainImgList="MainImgList" ref="main"/>
-    <detail-info :goodsInfo="goodsInfo"/>
-    <detail-img-info :ImgInfoList="ImgInfoList"/>
+    <div class="container">
+      <scroll ref="scroll">
+        <div class="con">
+          <detail-swiper :MainImgList="MainImgList" ref="main"/>
+          <detail-info :goodsInfo="goodsInfo"/>
+          <detail-img-info :ImgInfoList="ImgInfoList" @imgLoad="imgLoad"/>
+        </div>
+      </scroll>
+    </div>
+
     <detail-bottom></detail-bottom>
   </div>
 
@@ -17,6 +24,8 @@
   import DetailImgInfo from './childViews/DetailImgInfo.vue'
   import Scroll from '@/components/common/scroll/Scroll.vue'
   import DetailBottom from '@/views/details/childViews/DetailBottom.vue'
+
+
   export default {
     name: "Details",
     data() {
@@ -36,14 +45,19 @@
         this.ImgInfoList = res.Data.InfoImgList
         const goodsInfo = new GoodsInfo(res.Data)
         this.goodsInfo = goodsInfo
-        console.log(goodsInfo);
       })
     },
     mounted() {
-      console.log(Number.MAX_VALUE);
-    },
-    updated(){
 
+    },
+    updated() {
+
+    },
+    methods:{
+      imgLoad(){
+        console.log('1');
+        this.$refs.scroll.refresh()
+      }
     },
     components: {
       DetailsNavBar,
@@ -67,5 +81,15 @@
     z-index: 999;
     height: 100%;
 
+  }
+
+  .container {
+    position: absolute;
+    width: 100%;
+    top: 44px;
+    bottom: 50px;
+  }
+  .con {
+    position: relative;
   }
 </style>
