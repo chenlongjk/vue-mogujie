@@ -1,12 +1,12 @@
 <template>
   <div class="details">
-    <details-nav-bar></details-nav-bar>
+    <details-nav-bar ref="navbar" @scrollTo="scrollTo"></details-nav-bar>
     <div class="container">
-      <scroll ref="scroll">
+      <scroll ref="scroll" @scrollTance="scrollTance" :probe-type="3">
         <div class="con">
           <detail-swiper :MainImgList="MainImgList" ref="main"/>
-          <detail-info :goodsInfo="goodsInfo"/>
-          <detail-img-info :ImgInfoList="ImgInfoList" @imgLoad="imgLoad"/>
+          <detail-info :goodsInfo="goodsInfo" ref="info"/>
+          <detail-img-info :ImgInfoList="ImgInfoList" @imgLoad="imgLoad" ref="imginfo"/>
         </div>
       </scroll>
     </div>
@@ -24,7 +24,7 @@
   import DetailImgInfo from './childViews/DetailImgInfo.vue'
   import Scroll from '@/components/common/scroll/Scroll.vue'
   import DetailBottom from '@/views/details/childViews/DetailBottom.vue'
-
+  import {debounce} from "@/common/utils";
 
   export default {
     name: "Details",
@@ -33,7 +33,10 @@
         //轮播图数据
         MainImgList: [],
         goodsInfo: {},
-        ImgInfoList: []
+        ImgInfoList: [],
+        newRefresh: null,
+        position: [],
+        currentIndex: null
       }
     },
     created() {
@@ -48,15 +51,33 @@
       })
     },
     mounted() {
-
+      this.newRefresh = debounce(()=> {
+        this.$refs.scroll.refresh()
+        this.position = []
+        this.position.push(0)
+        this.position.push(this.$refs.info.$el.offsetTop)
+        this.position.push(this.$refs.imginfo.$el.offsetTop)
+        this.position.push(Number.MAX_VALUE)
+      }, 500)
     },
     updated() {
 
     },
-    methods:{
-      imgLoad(){
-        console.log('1');
-        this.$refs.scroll.refresh()
+    methods: {
+      imgLoad() {
+        this.newRefresh()
+      },
+      scrollTance(p) {
+        const pY = -(p.y)
+        for (let i=0; i < this.position.length - 1; i++) {
+          if (this.currentIndex !== i &&(pY >= this.position[i] && pY < this.position[i + 1])) {
+            this.currentIndex = i
+            this.$refs.navbar.currentIndex = this.currentIndex
+          }
+        }
+      },
+      scrollTo(i){
+        this.$refs.scroll.backTop(0,-this.position[i])
       }
     },
     components: {
@@ -89,6 +110,7 @@
     top: 44px;
     bottom: 50px;
   }
+
   .con {
     position: relative;
   }

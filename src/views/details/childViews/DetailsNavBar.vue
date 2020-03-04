@@ -17,13 +17,13 @@
     data() {
       return {
         titles: ['商品', '参数', '详情'],
-        currentIndex: 0
+          currentIndex:0
       }
     },
     methods: {
       checkOption(index) {
         this.currentIndex = index
-        console.log(index);
+        this.$emit('scrollTo',index)
       },
       back(){
         this.$router.history.go(-1)

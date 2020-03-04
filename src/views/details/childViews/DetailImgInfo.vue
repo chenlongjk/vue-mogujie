@@ -5,6 +5,8 @@
 </template>
 
 <script>
+
+
   export default {
     name: "DetailImgInfo",
     props: {
@@ -17,7 +19,7 @@
     },
     methods: {
       imgLoad() {
-        this.$emit('imgLoad')
+          this.$emit('imgLoad')
       }
     }
   }

@@ -20,7 +20,9 @@
       }
     },
     data() {
-      return {}
+      return {
+          name: 'jkc'
+      }
     }
   }
 </script>

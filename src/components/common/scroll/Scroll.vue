@@ -38,6 +38,7 @@
           pullUpLoad: this.pullUpLoad
         });
         this.scroll.on("scroll", position => {
+
           this.$emit("scrollTance", position);
         });
         if (this.pullUpLoad) {
@@ -50,7 +51,6 @@
         }
 
       },
-
       finishPullUp() {
         // 上拉加载完成
         this.scroll.finishPullUp();
