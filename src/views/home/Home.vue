@@ -30,7 +30,7 @@
   import NavBar from "@/components/common/navbar/NavBar";
   import TabControl from "@/components/content/TabControl";
   import GoodsList from "@/components/content/goods/GoodsList";
-  import BackTop from "@/components/content/backTop/BackTop";
+  import {backTop} from "@/common/mixin";
   import Scroll from "@/components/common/scroll/Scroll";
   // 获取数据的方法
   import {getHomeData, getHomeGoods} from "@/network/home";
@@ -44,10 +44,10 @@
         recommends: [],
         goods: [],
         params: {PageIndex: 1, PageRecord: 1},
-        isShowBtn: false,
-        position: {x: 0, y: 1}
+        position: 1
       };
     },
+    mixins: [backTop],
     created() {
     },
 
@@ -61,14 +61,11 @@
       });
     },
     methods: {
-      //返回顶部
-      scrollTopHome() {
-        this.$refs.scroll.backTop(0, 0);
-      },
       //判断滚动距离  返回顶部按钮是否显示
       scrollTance(position) {
-        this.position = position
-        this.isShowBtn = -position.y > 600 ? true : false;
+        this.position = position.y
+        console.log(position.y);
+        this.showBackTopBtn(-position.y)
       },
       //加载更多
       moreLoad() {
@@ -77,7 +74,7 @@
       }
     },
     activated() {
-      this.$refs.scroll.backTop(0, this.position.y, 0)
+      this.$refs.scroll.backTop(0, this.position, 0)
     },
     deactivated() {
       console.log('离开')
@@ -91,7 +88,6 @@
       NavBar,
       TabControl,
       GoodsList,
-      BackTop,
       Scroll
     }
   };

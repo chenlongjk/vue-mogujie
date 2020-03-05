@@ -10,8 +10,10 @@
         </div>
       </scroll>
     </div>
-
-    <detail-bottom></detail-bottom>
+    <div class="backBtn" v-show="isShowBtn">
+      <back-top @click.native="scrollTopHome"/>
+    </div>
+    <detail-bottom @addCart="addToCart"></detail-bottom>
   </div>
 
 </template>
@@ -25,7 +27,8 @@
   import Scroll from '@/components/common/scroll/Scroll.vue'
   import DetailBottom from '@/views/details/childViews/DetailBottom.vue'
   import {debounce} from "@/common/utils";
-
+  import {backTop} from "@/common/mixin";
+  import { Toast } from 'vant';
   export default {
     name: "Details",
     data() {
@@ -36,14 +39,17 @@
         ImgInfoList: [],
         newRefresh: null,
         position: [],
-        currentIndex: null
+        currentIndex: null,
+        id:null
       }
     },
+
+    mixins: [backTop],
     created() {
+      this.id = this.$route.query.id
       goodsDetails({
-        'Id': this.$route.query.id
+        'Id': this.id
       }).then(res => {
-        console.log(res);
         this.MainImgList = res.Data.MainImgList
         this.ImgInfoList = res.Data.InfoImgList
         const goodsInfo = new GoodsInfo(res.Data)
@@ -51,7 +57,7 @@
       })
     },
     mounted() {
-      this.newRefresh = debounce(()=> {
+      this.newRefresh = debounce(() => {
         this.$refs.scroll.refresh()
         this.position = []
         this.position.push(0)
@@ -69,15 +75,26 @@
       },
       scrollTance(p) {
         const pY = -(p.y)
-        for (let i=0; i < this.position.length - 1; i++) {
-          if (this.currentIndex !== i &&(pY >= this.position[i] && pY < this.position[i + 1])) {
+        for (let i = 0; i < this.position.length - 1; i++) {
+          if (this.currentIndex !== i && (pY >= this.position[i] && pY < this.position[i + 1])) {
             this.currentIndex = i
             this.$refs.navbar.currentIndex = this.currentIndex
           }
         }
+        this.showBackTopBtn(pY)
       },
-      scrollTo(i){
-        this.$refs.scroll.backTop(0,-this.position[i])
+      scrollTo(i) {
+        this.$refs.scroll.backTop(0, -this.position[i])
+      },
+    //  监听事件添加到购物车
+      addToCart(){
+        let goods = {}
+        goods.img = this.MainImgList[0]
+        goods.title = this.goodsInfo.ProductName
+        goods.price = this.goodsInfo.MaxPrice
+        goods.id = this.id
+        this.$store.commit('addCart',goods)
+        Toast('添加成功')
       }
     },
     components: {
@@ -113,5 +130,15 @@
 
   .con {
     position: relative;
+  }
+
+  .backBtn {
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    bottom: 60px;
+    right: 10px;
+    border-radius: 50%;
+    background-color: #ffffff;
   }
 </style>

@@ -23,6 +23,8 @@ export default {
     height: 44px;
     width: 100%;
     line-height: 44px;
+    box-sizing: border-box;
+    box-shadow: 1px 0 1px #cccccc;
   }
   .left, .right {
     width: 60px;
